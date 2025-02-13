@@ -1,0 +1,69 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-3">
+    <h1 class="text-center mb-4">상품 관리 페이지</h1>
+    <p>수량 버튼을 클릭할 시 자동 저장됩니다.<br><span style="color: red;">( 반드시 인터넷 연결 확인 )</span></p>
+    
+    <% products.forEach(product => { %>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><%= product.name %></h5>
+                <p class="card-text">가격: <%= product.price %>원</p>
+                <div class="input-group mb-3">
+                    <button class="btn btn-outline-secondary decrease-quantity" type="button" data-product-id="<%= product._id %>">-</button>
+                    <input type="text" class="form-control text-center quantity-input" value="<%= product.quantity %>" readonly>
+                    <button class="btn btn-outline-secondary increase-quantity" type="button" data-product-id="<%= product._id %>">+</button>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary btn-sm manage-product" data-product-id="<%= product._id %>">
+                        상품관리
+                    </button>
+                </div>        
+    
+            </div>
+        </div>
+    <% }) %>
+
+    <div class="d-flex justify-content-end">
+        <a href="/products/new" class="btn btn-success" id="add-product">상품 추가</a>
+    </div>        
+
+    <div class="mt-4">
+    </div>
+</div>
+
+<form action="/cart/add" method="POST">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>선택</th>
+          <th>상품명</th>
+          <th>카테고리</th>
+          <th>사이즈</th>
+          <th>남은 수량</th>
+          <th>선택 수량</th>
+          <th>가격</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% products.forEach(product => { %>
+          <% product.sizes.forEach(size => { %>
+            <tr>
+              <td><input type="checkbox" class="form-check-input" name="items[]" value="<%= product._id %>_<%= size.size %>"></td>
+              <td><%= product.name %></td>
+              <td><%= product.category %></td>
+              <td><%= size.size %></td>
+              <td><%= size.quantity %></td> <!-- 남은 수량 표시 -->
+              <td>
+                <input type="number" name="quantities[]" class="form-control" value="1" min="1" max="<%= size.quantity %>">
+              </td>
+              <td><%= product.price %></td>
+            </tr>
+          <% }) %>
+        <% }) %>
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">장바구니에 담기</button>
+  </form>
+  
+  
