@@ -2,51 +2,51 @@ const Product = require('../models/product');
 const User = require('../models/user');
 const ExpressError = require('../utils/ExpressError');
 
-const Cart = require('../models/Cart');
+const Cart = require('../models/cart');
 const Product = require('../models/product');
 
 exports.addToCart = async (req, res) => {
-      const userId = req.user._id;
-      const { items, quantities } = req.body;
-  
-      if (!items || items.length === 0) {
-        return res.status(400).send('선택된 상품이 없습니다.');
+  const userId = req.user._id;
+  const { items, quantities } = req.body;
+
+  if (!items || items.length === 0) {
+      throw new ExpressError('선택된 상품이 없습니다.', 400);
+  }
+
+  let cart = await Cart.findOne({ user: userId }) || new Cart({ user: userId, items: [] });
+
+  for (let i = 0; i < items.length; i++) {
+      const [productId, size] = items[i].split('_');
+      const quantity = parseInt(quantities[i]);
+
+      if (isNaN(quantity) || quantity < 1) {
+          throw new ExpressError('유효하지 않은 수량입니다.', 400);
       }
-  
-      let cart = await Cart.findOne({ user: userId }) || new Cart({ user: userId, items: [] });
-  
-      for (let i = 0; i < items.length; i++) {
-        const [productId, size] = items[i].split('_');
-        const quantity = parseInt(quantities[i]);
-  
-        // 상품 및 사이즈별 재고 확인
-        const product = await Product.findById(productId);
-        const sizeData = product.sizes.find(s => s.size === size);
-  
-        if (!sizeData || quantity > sizeData.quantity) {
-          return res.status(400).send(`재고가 부족합니다: ${product.name} (${size})`);
-        }
-  
-        // 장바구니에 추가
-        const existingItem = cart.items.find(item =>
+
+      const product = await Product.findById(productId);
+      if (!product) {
+          throw new ExpressError('상품을 찾을 수 없습니다.', 404);
+      }
+
+      const sizeData = product.sizes.find(s => s.size === size);
+      if (!sizeData || quantity > sizeData.quantity) {
+          throw new ExpressError(`재고가 부족합니다: ${product.name} (${size})`, 400);
+      }
+
+      const existingItem = cart.items.find(item =>
           item.product.toString() === productId && item.size === size
-        );
-  
-        if (existingItem) {
+      );
+
+      if (existingItem) {
           existingItem.quantity += quantity;
-        } else {
+      } else {
           cart.items.push({ product: productId, size, quantity });
-        }
       }
-  
-      await cart.save();
-      res.redirect('/cart');
-  };
-  
+  }
 
-
-
-
+  await cart.save();
+  res.redirect('/cart');
+};
 
 
 

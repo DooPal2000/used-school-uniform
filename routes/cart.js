@@ -4,9 +4,9 @@ const passport = require('passport');
 
 const catchAsync = require('../utils/catchAsync');
 const { isAuthorized, isLoggedIn } = require('../middleware');
-const cartController = require('../controllers.cartController');
+const CartController = require('../controllers/cartController');
 
-router.post('/add', isLoggedIn, catchAsync(cartController.addToCart));
+router.post('/add', isLoggedIn, catchAsync(CartController.addToCart));
 
 
 router.route('/')
