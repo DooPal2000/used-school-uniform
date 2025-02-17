@@ -1,0 +1,14 @@
+<% layout('layouts/boilerplate') %>
+
+<h1>장바구니</h1>
+<% if (cart && cart.items.length > 0) { %>
+  <% cart.items.forEach(item => { %>
+    <div>
+      <span>상품 ID: <%= item.product %></span>
+      <span>사이즈: <%= item.size %></span>
+      <span>수량: <%= item.quantity %></span>
+    </div>
+  <% }) %>
+<% } else { %>
+  <p>장바구니가 비어있습니다.</p>
+<% } %>
