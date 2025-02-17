@@ -1,27 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-
 const catchAsync = require('../utils/catchAsync');
-const { isLoggedIn, isSecureAdminCreation, isAuthorized } = require('../middleware');
-const products = require('../controllers/Cproduct');
+const { isAdmin } = require('../middleware');
+const productController = require('../controllers/productController');
 
+// 모든 라우터에 isAdmin 미들웨어 적용
+router.use(isAdmin);
 
-router.route('/')
-    .get(isAuthorized, catchAsync(products.index))
-    .post(isAuthorized, catchAsync(products.createProduct));
-
-router.get('/new', isAuthorized, products.renderNewForm);
-
-router.route('/:id')
-    .get(isAuthorized, catchAsync(products.showProduct))
-    .put(isAuthorized, catchAsync(products.updateProduct))
-    .delete(isAuthorized, catchAsync(products.deleteProduct));
-
-router.get('/:id/edit', isAuthorized, catchAsync(products.renderEditForm));
-
-router.post('/:id/update-quantity', isAuthorized, catchAsync(products.updateQuantity));
-
-
+router.get('/', catchAsync(productController.index));
+router.get('/new', catchAsync(productController.renderNewForm));
+router.post('/', catchAsync(productController.createProduct));
+router.get('/:id', catchAsync(productController.showProduct));
+router.get('/:id/edit', catchAsync(productController.renderEditForm));
+router.put('/:id', catchAsync(productController.updateProduct));
+router.patch('/:id/quantity', catchAsync(productController.updateQuantity));
+router.delete('/:id', catchAsync(productController.deleteProduct));
 
 module.exports = router;
