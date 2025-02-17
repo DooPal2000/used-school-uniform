@@ -7,22 +7,25 @@ const { isAuthorized, isLoggedIn } = require('../middleware');
 const cartController = require('../controllers/cartController');
 
 router.post('/add', isLoggedIn, catchAsync(cartController.addToCart));
+router.get('/', isLoggedIn, catchAsync(cartController.getCart));
 
 
-router.route('/')
-    .get(isAuthorized, catchAsync(products.index))
-    .post(isAuthorized, catchAsync(products.createProduct));
 
-router.get('/new', isAuthorized, products.renderNewForm);
 
-router.route('/:id')
-    .get(isAuthorized, catchAsync(products.showProduct))
-    .put(isAuthorized, catchAsync(products.updateProduct))
-    .delete(isAuthorized, catchAsync(products.deleteProduct));
+// router.route('/')
+//     .get(isAuthorized, catchAsync(cartController.index))
+//     .post(isAuthorized, catchAsync(cartController.createProduct));
 
-router.get('/:id/edit', isAuthorized, catchAsync(products.renderEditForm));
+// router.get('/new', isAuthorized, products.renderNewForm);
 
-router.post('/:id/update-quantity', isAuthorized, catchAsync(products.updateQuantity));
+// router.route('/:id')
+//     .get(isAuthorized, catchAsync(products.showProduct))
+//     .put(isAuthorized, catchAsync(products.updateProduct))
+//     .delete(isAuthorized, catchAsync(products.deleteProduct));
+
+// router.get('/:id/edit', isAuthorized, catchAsync(products.renderEditForm));
+
+// router.post('/:id/update-quantity', isAuthorized, catchAsync(products.updateQuantity));
 
 
 
