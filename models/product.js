@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['교복', '후드티', '기타'], // 카테고리 종류를 명시적으로 제한
+    enum: ['교복상의', '교복하의', '교복마의', '생활복상의', '생활복하의'], // 카테고리 종류를 명시적으로 제한
     required: true
   },
   sizes: [
