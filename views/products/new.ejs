@@ -1,25 +1,64 @@
 <% layout('layouts/boilerplate') %>
 
-    <div class="container mt-3">
-        <h1 class="text-center">새 상품 추가 페이지</h1>
-        <form action="/products" method="POST">
-            <div class="form-group mt-2">
-                <label for="name">상품명</label>
-                <input type="text" class="form-control" id="name" name="product[name]" required>
-            </div>
+<div class="container mt-3">
+    <h1 class="text-center mb-4">새 상품 추가 페이지</h1>
+    <form action="/products" method="POST">
+        <div class="mb-3">
+            <label for="name" class="form-label">상품명</label>
+            <input type="text" class="form-control" id="name" name="product[name]" required>
+        </div>
 
-            <div class="form-group mt-2">
-                <label for="price">가격</label>
-                <input type="number" class="form-control" id="price" name="product[price]" required>
-            </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">카테고리</label>
+            <select class="form-select" id="category" name="product[category]" required>
+                <option value="">카테고리 선택</option>
+                <option value="교복상의">교복상의</option>
+                <option value="교복하의">교복하의</option>
+                <option value="교복마의">교복마의</option>
+                <option value="생활복상의">생활복상의</option>
+                <option value="생활복하의">생활복하의</option>
+            </select>
+        </div>
 
-            <div class="form-group mt-2">
-                <label for="quantity">현재 수량</label>
-                <input type="number" class="form-control" id="quantity" name="product[quantity]" required min="0">
+        <div class="mb-3">
+            <label class="form-label">사이즈 및 수량</label>
+            <div id="sizes-container">
+                <div class="row mb-2">
+                    <div class="col">
+                        <select class="form-select" name="product[sizes][0][size]" required>
+                            <option value="">사이즈 선택</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <input type="number" class="form-control" name="product[sizes][0][quantity]" placeholder="수량" required min="0">
+                    </div>
+                </div>
             </div>
+            <button type="button" class="btn btn-secondary mt-2" onclick="addSizeInput()">사이즈 추가</button>
+        </div>
 
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary mt-3">상품 추가 완료</button>
-            </div>        
-        </form>
-    </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">가격</label>
+            <input type="number" class="form-control" id="price" name="product[price]" required min="0">
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">상품 설명</label>
+            <textarea class="form-control" id="description" name="product[description]" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="imageUrl" class="form-label">이미지 URL</label>
+            <input type="url" class="form-control" id="imageUrl" name="product[imageUrl]">
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">상품 추가 완료</button>
+        </div>        
+    </form>
+</div>
