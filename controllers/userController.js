@@ -42,7 +42,6 @@ module.exports.renderLogin = (req, res) => {
 
 module.exports.login = (req, res) => {
     let redirectUrl = res.locals.returnTo || '/home';
-    console.log(req.user);
     // 사용자 역할이 'admin'인 경우 관리자 페이지로 리다이렉트
     if (req.user && req.user.role === 'admin') {
         redirectUrl = '/admin-dashboard'; // 관리자 대시보드 URL

@@ -18,9 +18,14 @@ module.exports.isRealPhone = (req, res, next) => {
     //     return res.redirect('/login');
     // }
 
+    // 전화번호에서 하이픈 제거
+    const rawPhone = req.body.phonenum || "";
+    const cleanedPhone = rawPhone.replace(/-/g, ""); // 하이픈 제거
+
+
     // 전화번호 유효성 검사
     const phoneRegex = /^[0-9]{10,11}$/;
-    if (!req.body.phonenum || !phoneRegex.test(req.body.phonenum)) {
+    if (!req.body.phonenum || !phoneRegex.test(cleanedPhone)) {
         req.flash('error', '유효한 전화번호를 입력해 주세요.');
         return res.redirect('/register');  // 혹은 원하는 페이지로 리디렉션
     }

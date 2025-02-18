@@ -5,10 +5,10 @@ const { isAdmin } = require('../middleware');
 const productController = require('../controllers/productController');
 
 // 모든 라우터에 isAdmin 미들웨어 적용
-router.use(isAdmin);
+// router.use(isAdmin);
 
 router.get('/', catchAsync(productController.index));
-router.get('/new', catchAsync(productController.renderNewForm));
+router.get('/new', productController.renderNewForm);
 router.post('/', catchAsync(productController.createProduct));
 router.get('/:id', catchAsync(productController.showProduct));
 router.get('/:id/edit', catchAsync(productController.renderEditForm));

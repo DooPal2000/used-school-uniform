@@ -53,7 +53,4 @@ router.post('/login', (req, res, next) => {
 
 router.get('/logout', userController.logout);
 
-
-// router.get('/users/favorites', catchAsync(users.searchFavorite));
-
 module.exports = router;
