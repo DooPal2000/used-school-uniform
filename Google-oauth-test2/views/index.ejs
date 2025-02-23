@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google OAuth 로그인</title>
+</head>
+<body>
+    <h1>Google OAuth 로그인 예제</h1>
+
+    <% if (user) { %>
+        <p>환영합니다, <%= user.name %>님!</p>
+        <p>이메일: <%= user.email %></p>
+        <a href="/auth/logout">로그아웃</a>
+    <% } else { %>
+        <a href="/auth/google">
+            <button>Google 로그인</button>
+        </a>
+    <% } %>
+</body>
+</html>
